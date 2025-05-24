@@ -31,4 +31,5 @@ tasks/
 # Cursor AI and development tools
 .cursor/
 .rules/
-.roo/ 
+.roo/
+.roomodes 
