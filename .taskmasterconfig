@@ -1,0 +1,31 @@
+{
+  "models": {
+    "main": {
+      "provider": "google",
+      "modelId": "gemini-2.0-flash",
+      "maxTokens": 120000,
+      "temperature": 0.2
+    },
+    "research": {
+      "provider": "openrouter",
+      "modelId": "perplexity/llama-3.1-sonar-small-128k-online",
+      "maxTokens": 8700,
+      "temperature": 0.1
+    },
+    "fallback": {
+      "provider": "google",
+      "modelId": "gemini-2.0-flash",
+      "maxTokens": 64000,
+      "temperature": 0.2
+    }
+  },
+  "global": {
+    "logLevel": "info",
+    "debug": false,
+    "defaultSubtasks": 5,
+    "defaultPriority": "medium",
+    "projectName": "Taskmaster",
+    "ollamaBaseUrl": "http://localhost:11434/api",
+    "azureOpenaiBaseUrl": "https://your-endpoint.openai.azure.com/"
+  }
+}
