@@ -1,0 +1,243 @@
+<context>
+# Overview  
+ManimNext is a web application that automatically generates animated educational videos using Manim (Mathematical Animation Engine). The platform allows users to input any educational topic and receive a professionally animated video explanation within minutes. This solves the problem of time-intensive video creation for educators, students, and content creators who need high-quality mathematical and scientific animations but lack the technical expertise or time to create them manually.
+
+The target audience includes educators, students, online course creators, tutors, and educational content creators who need engaging visual explanations for complex topics. The value proposition is transforming hours of manual animation work into a simple text-to-video process.
+
+# Core Features  
+## Topic-to-Video Generation
+- **What it does**: Users input an educational topic (e.g., "quadratic equations", "photosynthesis", "Newton's laws") and receive an animated video explanation
+- **Why it's important**: Eliminates the technical barrier to creating professional educational animations
+- **How it works**: LLM processes the topic, generates appropriate Manim code, renders video in cloud infrastructure
+
+## AI-Powered Script Generation
+- **What it does**: Uses OpenRouter LLM to analyze the topic and generate contextually appropriate Manim animation scripts
+- **Why it's important**: Ensures educational accuracy and appropriate visual representation for each topic
+- **How it works**: Topic analysis → educational content structuring → Manim code generation with proper mathematical/scientific visualizations
+
+## Cloud-Based Video Rendering
+- **What it does**: Processes Manim scripts in Google Cloud Run environment and returns rendered MP4 videos
+- **Why it's important**: Eliminates need for local Manim installation and provides scalable rendering infrastructure
+- **How it works**: Manim script → Cloud Run container → video rendering → download link generation
+
+## User Authentication & Video Storage (Phase 2)
+- **What it does**: Firebase-based user accounts with personal video libraries and history
+- **Why it's important**: Allows users to save, organize, and revisit their generated content
+- **How it works**: Firebase Auth integration with Cloud Storage for video persistence
+
+# User Experience  
+## Primary User Personas
+- **Educator Emma**: High school math teacher who needs quick visual aids for complex concepts
+- **Student Sam**: University student creating study materials and presentations
+- **Creator Chris**: Online course developer who needs professional animations at scale
+
+## Key User Flows
+1. **Quick Generation Flow**: Landing page → Topic input → Video generation → Download/View
+2. **Authenticated User Flow**: Login → Dashboard → Topic input → Video generation → Save to library → Share/Download
+3. **Library Management Flow**: Dashboard → Video library → Search/filter → Re-download/Share
+
+## UI/UX Considerations
+- Clean, minimal interface focusing on the topic input field
+- Real-time progress indicators during video generation
+- Preview capabilities before final rendering
+- Mobile-responsive design for accessibility
+- Clear error handling and user feedback
+</context>
+<PRD>
+# Technical Architecture  
+## System Components
+- **Frontend**: Next.js 14 with TypeScript, Tailwind CSS, React components
+- **Authentication**: Firebase Auth (Phase 2)
+- **LLM Integration**: OpenRouter API for script generation
+- **Video Rendering**: Google Cloud Run with Manim-enabled containers
+- **Storage**: Firebase Cloud Storage for video persistence (Phase 2)
+- **Database**: Firebase Firestore for user data and video metadata (Phase 2)
+
+## Data Models
+### Topic Request
+```
+{
+  topicId: string,
+  userInput: string,
+  difficulty: 'beginner' | 'intermediate' | 'advanced',
+  subject: 'math' | 'physics' | 'chemistry' | 'biology' | 'general',
+  timestamp: Date,
+  status: 'processing' | 'completed' | 'failed'
+}
+```
+
+### Generated Video
+```
+{
+  videoId: string,
+  topicId: string,
+  userId?: string,
+  manimScript: string,
+  videoUrl: string,
+  duration: number,
+  createdAt: Date,
+  title: string,
+  description: string
+}
+```
+
+### User Profile (Phase 2)
+```
+{
+  userId: string,
+  email: string,
+  displayName: string,
+  videoHistory: string[],
+  subscription: 'free' | 'premium',
+  createdAt: Date
+}
+```
+
+## APIs and Integrations
+- **OpenRouter API**: LLM script generation endpoint
+- **Google Cloud Run**: Video rendering service
+- **Firebase APIs**: Authentication, Firestore, Cloud Storage
+- **Internal APIs**: 
+  - `/api/generate-script` - Topic to Manim script conversion
+  - `/api/render-video` - Cloud Run video rendering trigger
+  - `/api/videos` - Video management CRUD operations
+
+## Infrastructure Requirements
+- **Frontend Hosting**: Vercel/Netlify for Next.js deployment
+- **Cloud Run**: Container with Python, Manim, and rendering dependencies
+- **Firebase Project**: Auth, Firestore, Cloud Storage configuration
+- **Environment Variables**: API keys, Firebase config, Cloud Run endpoints
+
+# Development Roadmap  
+## Phase 1: MVP - Core Video Generation
+### Frontend Foundation
+- Next.js project setup with TypeScript and Tailwind
+- Landing page with topic input form
+- Video generation interface with progress tracking
+- Basic error handling and user feedback
+
+### LLM Integration
+- OpenRouter API integration
+- Topic analysis and Manim script generation
+- Script validation and error handling
+- Support for basic mathematical and scientific topics
+
+### Cloud Rendering Pipeline
+- Google Cloud Run container setup with Manim
+- API endpoint for script-to-video conversion
+- File handling and temporary storage
+- Video download/streaming capabilities
+
+### Core User Flow
+- Topic input → Script generation → Cloud rendering → Video delivery
+- Basic responsive design
+- Error states and loading indicators
+
+## Phase 2: User Management & Persistence
+### Authentication System
+- Firebase Auth integration
+- User registration and login flows
+- Protected routes and session management
+
+### Video Library
+- Personal video history and storage
+- Firebase Cloud Storage integration
+- Video metadata management with Firestore
+- Search and filtering capabilities
+
+### Enhanced UX
+- User dashboard with video library
+- Video sharing capabilities
+- Download history and re-access features
+
+## Phase 3: Advanced Features & Optimization
+### Enhanced AI Capabilities
+- Multiple LLM model support
+- Custom animation style preferences
+- Topic difficulty level adjustment
+- Multi-language support
+
+### Performance & Scaling
+- Video caching and CDN integration
+- Batch processing capabilities
+- Advanced error recovery
+- Performance monitoring and analytics
+
+### Premium Features
+- Longer video generation
+- Custom branding options
+- Bulk generation capabilities
+- Advanced export formats
+
+# Logical Dependency Chain
+## Foundation First (Phase 1)
+1. **Next.js Setup**: Basic project structure and routing
+2. **UI Components**: Topic input form and basic layout
+3. **OpenRouter Integration**: LLM API connection and script generation
+4. **Cloud Run Setup**: Manim rendering environment
+5. **End-to-End Flow**: Complete topic-to-video pipeline
+
+## Quick Usable Frontend Priority
+1. **Landing Page**: Immediate user interaction capability
+2. **Topic Input**: Core functionality entry point
+3. **Progress Tracking**: User feedback during processing
+4. **Video Display**: Result presentation and download
+
+## Atomic Feature Building
+- Each component (LLM, rendering, storage) can be developed and tested independently
+- API endpoints designed for modularity and future expansion
+- Frontend components built as reusable modules
+- Authentication layer designed as optional enhancement
+
+# Risks and Mitigations  
+## Technical Challenges
+### Risk: Cloud Run cold starts affecting user experience
+**Mitigation**: Implement container warming strategies and provide accurate time estimates
+
+### Risk: LLM generating invalid or unsafe Manim code
+**Mitigation**: Code validation layer, sandboxed execution environment, and fallback templates
+
+### Risk: Video rendering failures or timeouts
+**Mitigation**: Robust error handling, retry mechanisms, and user notification systems
+
+## MVP Scope Management
+### Risk: Feature creep delaying core functionality
+**Mitigation**: Strict Phase 1 scope focusing only on basic topic-to-video generation
+
+### Risk: Complex topics requiring advanced Manim features
+**Mitigation**: Start with limited topic domains (basic math, simple physics) and expand gradually
+
+## Resource Constraints
+### Risk: Cloud Run costs scaling with usage
+**Mitigation**: Usage monitoring, rate limiting, and cost optimization strategies
+
+### Risk: OpenRouter API rate limits and costs
+**Mitigation**: Request caching, user rate limiting, and cost monitoring
+
+# Appendix  
+## Research Findings
+- Manim community best practices for educational content
+- OpenRouter model comparison for code generation tasks
+- Google Cloud Run optimization for video rendering workloads
+- Educational video engagement metrics and user preferences
+
+## Technical Specifications
+### Manim Container Requirements
+- Python 3.9+
+- Manim Community Edition
+- LaTeX distribution for mathematical rendering
+- FFmpeg for video processing
+- Sufficient memory allocation for complex animations
+
+### Performance Targets
+- Script generation: < 30 seconds
+- Video rendering: < 2 minutes for 60-second videos
+- Total user wait time: < 3 minutes
+- 99% uptime for core services
+
+### Security Considerations
+- Input sanitization for topic requests
+- Sandboxed code execution in Cloud Run
+- Rate limiting to prevent abuse
+- Secure API key management
+</PRD> 
