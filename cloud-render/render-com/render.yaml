@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: manim-renderer
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    region: oregon
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: MAX_RENDER_TIME
+        value: 3600
+      - key: DEFAULT_QUALITY
+        value: medium_quality
+      - key: DEFAULT_FORMAT
+        value: mp4
+      - key: RENDER_SERVICE_NAME
+        value: manim-renderer
+      - key: FLASK_DEBUG
+        value: false
+    
+    # Resource configuration
+    numInstances: 1
+    
+    # Auto-deploy settings
+    autoDeploy: true
+    
+    # Build settings
+    buildCommand: echo "Using Docker build"
+    startCommand: python app.py
+    
+    # Health check settings
+    healthCheckPath: /health
+    
+    # Disk storage (for temporary files and rendered videos)
+    disk:
+      name: manim-temp
+      mountPath: /app/temp
+      sizeGB: 10 
