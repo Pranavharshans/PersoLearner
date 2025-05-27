@@ -1,232 +1,511 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Play, Sparkles, Zap, BookOpen, Users, Star, X } from 'lucide-react';
-import TopicInputForm from './TopicInputForm';
-import Header from './Header';
-import Footer from './Footer';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { Button } from './ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardBadge } from './ui/card';
+import { cn } from '@/lib/utils';
+import { 
+  Sparkles, 
+  Zap, 
+  Wand2, 
+  Video, 
+  Download, 
+  Users, 
+  Star, 
+  ArrowRight, 
+  Play,
+  Code2,
+  Palette,
+  Clock,
+  TrendingUp,
+  Shield,
+  Globe,
+  Check,
+  X
+} from 'lucide-react';
 
-export default function LandingPage() {
-  const [showForm, setShowForm] = useState(false);
+// Animated background components
+const FloatingElement = ({ delay = 0, duration = 20, children, className }: {
+  delay?: number
+  duration?: number
+  children: React.ReactNode
+  className?: string
+}) => (
+  <motion.div
+    className={cn('absolute opacity-60', className)}
+    animate={{
+      y: [-20, 20, -20],
+      x: [-10, 10, -10],
+      rotate: [0, 5, -5, 0],
+    }}
+    transition={{
+      duration,
+      repeat: Infinity,
+      delay,
+      ease: 'easeInOut',
+    }}
+  >
+    {children}
+  </motion.div>
+);
 
-  // Handle escape key to close modal
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && showForm) {
-      setShowForm(false);
-    }
-  };
+const GridPattern = () => (
+  <div className="absolute inset-0 overflow-hidden">
+    <div className="grid-pattern opacity-30" />
+    <div className="grid-pattern-large opacity-10" />
+  </div>
+);
 
-  // Prevent body scroll when modal is open
+interface StatCounterProps {
+  end: number
+  duration?: number
+  suffix?: string
+  prefix?: string
+}
+
+const StatCounter = ({ end, duration = 2, suffix = '', prefix = '' }: StatCounterProps) => {
+  const [count, setCount] = useState(0);
+  const { ref, inView } = useInView({ triggerOnce: true });
+
   useEffect(() => {
-    if (showForm) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+    if (inView) {
+      let startTime: number;
+      const startCount = 0;
+      
+      const animate = (currentTime: number) => {
+        if (!startTime) startTime = currentTime;
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / (duration * 1000), 1);
+        
+        const currentCount = Math.floor(progress * end);
+        setCount(currentCount);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      requestAnimationFrame(animate);
     }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [showForm]);
+  }, [inView, end, duration]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" onKeyDown={handleKeyDown}>
-      <Header />
-      
-      {/* Hero Section */}
-      <main className="relative">
-        {/* Background Effects */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-          <div className="absolute -top-40 -right-32 w-60 h-60 sm:w-80 sm:h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-          <div className="absolute -bottom-40 -left-32 w-60 h-60 sm:w-80 sm:h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-          <div className="absolute top-40 left-40 w-60 h-60 sm:w-80 sm:h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-        </div>
+    <span ref={ref} className="tabular-nums">
+      {prefix}{count.toLocaleString()}{suffix}
+    </span>
+  );
+};
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-12 sm:pb-16 safe-area-inset-top">
-          <div className="text-center">
-            {/* Hero Content */}
-            <div className="max-w-4xl mx-auto">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                Transform Ideas into
-                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent block sm:inline">
-                  {" "}Stunning Videos
-                </span>
-              </h1>
-              
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 sm:mb-8 leading-relaxed px-4 sm:px-0">
-                Generate professional educational animations using AI and Manim. 
-                Turn any topic into engaging visual content in minutes.
-              </p>
+export default function LandingPage() {
+  const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState('');
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4 sm:px-0">
-                <button
-                  onClick={() => setShowForm(true)}
-                  className="group bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2 w-full sm:w-auto justify-center touch-manipulation tap-highlight-transparent"
-                  aria-label="Start creating your video"
-                >
-                  <Play className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
-                  Start Creating
-                </button>
-                
-                <button 
-                  className="text-white border border-gray-400 hover:border-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 hover:bg-white hover:text-gray-900 w-full sm:w-auto touch-manipulation tap-highlight-transparent"
-                  aria-label="Watch demonstration video"
-                >
-                  Watch Demo
-                </button>
-              </div>
+  return (
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0">
+        <GridPattern />
+        
+        {/* Floating geometric elements */}
+        <FloatingElement delay={0} duration={25} className="top-20 left-20">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 opacity-20 blur-sm" />
+        </FloatingElement>
+        
+        <FloatingElement delay={5} duration={30} className="top-40 right-32">
+          <div className="w-12 h-12 rotate-45 bg-gradient-to-r from-pink-500 to-red-500 opacity-20 blur-sm" />
+        </FloatingElement>
+        
+        <FloatingElement delay={10} duration={35} className="bottom-40 left-40">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-green-500 to-blue-500 opacity-15 blur-sm" />
+        </FloatingElement>
+        
+        <FloatingElement delay={15} duration={28} className="bottom-20 right-20">
+          <div className="w-14 h-14 rotate-12 bg-gradient-to-r from-yellow-500 to-orange-500 opacity-20 blur-sm" />
+        </FloatingElement>
 
-              {/* Stats */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto px-4 sm:px-0">
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-white mb-2">10x</div>
-                  <div className="text-gray-400 text-sm sm:text-base">Faster than manual animation</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-white mb-2">50+</div>
-                  <div className="text-gray-400 text-sm sm:text-base">Educational topics supported</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-white mb-2">4K</div>
-                  <div className="text-gray-400 text-sm sm:text-base">High-quality output</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Large background gradients */}
+        <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-blue-500/10 to-transparent blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-purple-500/10 to-transparent blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-gradient-radial from-pink-500/5 to-transparent blur-3xl" />
+      </div>
 
-        {/* Topic Input Form Modal */}
-        {showForm && (
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 modal-overlay"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-title"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setShowForm(false);
-              }
-            }}
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Hero Section */}
+        <section className="container mx-auto px-6 pt-20 pb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="text-center max-w-5xl mx-auto"
           >
-            <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-              <div className="flex justify-between items-center mb-4 sm:mb-6">
-                <h2 id="modal-title" className="text-xl sm:text-2xl font-bold text-gray-900">Create Your Video</h2>
-                <button
-                  onClick={() => setShowForm(false)}
-                  className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors touch-manipulation tap-highlight-transparent"
-                  aria-label="Close modal"
-                >
-                  <X className="w-6 h-6" aria-hidden="true" />
-                </button>
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium mb-8"
+            >
+              <Sparkles className="w-4 h-4 text-yellow-400" />
+              <span>Powered by Advanced AI Technology</span>
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-2 h-2 bg-green-400 rounded-full"
+              />
+            </motion.div>
+
+            {/* Main Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight mb-8"
+            >
+              <span className="block">Create Stunning</span>
+              <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient-shift">
+                Math Animations
+              </span>
+              <span className="block">in Seconds</span>
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-xl md:text-2xl lg:text-3xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed"
+            >
+              Transform complex mathematical concepts into beautiful, engaging animations with the power of AI. 
+              No coding required, just describe what you want to visualize.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
+            >
+              <Button
+                variant="gradient-cosmic"
+                size="xl"
+                className="text-lg px-8 py-4 shadow-2xl hover:shadow-glow-blue hover:scale-105 transition-all duration-300"
+                leftIcon={<Play className="w-5 h-5" />}
+                onClick={() => setShowModal(true)}
+              >
+                Try ManimNext Free
+              </Button>
+              
+              <Button
+                variant="glass"
+                size="xl"
+                className="text-lg px-8 py-4"
+                leftIcon={<Video className="w-5 h-5" />}
+              >
+                Watch Demo
+              </Button>
+            </motion.div>
+
+            {/* Trust indicators */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9, duration: 0.8 }}
+              className="flex flex-wrap justify-center items-center gap-8 text-slate-400 text-sm"
+            >
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-green-400" />
+                <span>No Coding Required</span>
               </div>
-              <TopicInputForm onClose={() => setShowForm(false)} />
-            </div>
-          </div>
-        )}
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-blue-400" />
+                <span>Results in Seconds</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Globe className="w-4 h-4 text-purple-400" />
+                <span>Used by 10,000+ Educators</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </section>
 
         {/* Features Section */}
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Why Choose ManimNext?
+        <section className="container mx-auto px-6 py-32">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Powerful Features
+              </span>
             </h2>
-            <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto px-4 sm:px-0">
-              Powered by cutting-edge AI and the proven Manim animation engine, 
-              we make professional video creation accessible to everyone.
+            <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+              Everything you need to create professional mathematical animations that captivate and educate
             </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+            {[
+              {
+                icon: <Wand2 className="w-8 h-8" />,
+                title: "AI-Powered Creation",
+                description: "Simply describe your mathematical concept in natural language and watch as our AI transforms it into stunning animations.",
+                gradient: "from-blue-500 to-cyan-500",
+                badge: "Most Popular"
+              },
+              {
+                icon: <Code2 className="w-8 h-8" />,
+                title: "No Coding Required",
+                description: "Create complex mathematical visualizations without writing a single line of code. Perfect for educators and students.",
+                gradient: "from-purple-500 to-pink-500",
+              },
+              {
+                icon: <Palette className="w-8 h-8" />,
+                title: "Customizable Styles",
+                description: "Choose from dozens of professional themes and color schemes to match your brand or presentation style.",
+                gradient: "from-green-500 to-blue-500",
+              },
+              {
+                icon: <Clock className="w-8 h-8" />,
+                title: "Lightning Fast",
+                description: "Generate high-quality animations in seconds, not hours. Save time and focus on what matters most - teaching.",
+                gradient: "from-yellow-500 to-orange-500",
+              },
+              {
+                icon: <Download className="w-8 h-8" />,
+                title: "Multiple Formats",
+                description: "Export your animations as MP4, GIF, or interactive web components. Perfect for any platform or presentation.",
+                gradient: "from-red-500 to-pink-500",
+              },
+              {
+                icon: <TrendingUp className="w-8 h-8" />,
+                title: "Analytics & Insights",
+                description: "Track engagement and understanding with built-in analytics. See how your animations perform in real-time.",
+                gradient: "from-indigo-500 to-purple-500",
+                badge: "New"
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+              >
+                <Card
+                  variant="glass"
+                  size="lg"
+                  hover="lift"
+                  interactive
+                  className="h-full relative group"
+                >
+                  {feature.badge && (
+                    <div className="absolute -top-2 -right-2 z-20">
+                      <CardBadge variant="primary" className="text-xs font-bold">
+                        {feature.badge}
+                      </CardBadge>
+                    </div>
+                  )}
+                  
+                  <CardHeader center>
+                    <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-r ${feature.gradient} mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300`}>
+                      {feature.icon}
+                    </div>
+                    <CardTitle size="lg" className="mb-3">
+                      {feature.title}
+                    </CardTitle>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <CardDescription className="text-slate-300 leading-relaxed text-center">
+                      {feature.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {/* Feature 1 */}
-            <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300 group">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-6 h-6 text-white" aria-hidden="true" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">AI-Powered Generation</h3>
-              <p className="text-gray-300 text-sm sm:text-base">
-                Advanced language models understand your topic and generate perfect Manim scripts automatically.
-              </p>
-            </div>
+        {/* Stats Section */}
+        <section className="container mx-auto px-6 py-32">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Trusted by Educators <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Worldwide</span>
+            </h2>
+          </motion.div>
 
-            {/* Feature 2 */}
-            <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300 group">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                <Zap className="w-6 h-6 text-white" aria-hidden="true" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">Lightning Fast</h3>
-              <p className="text-gray-300 text-sm sm:text-base">
-                Cloud-based rendering delivers your videos in minutes, not hours. Scale automatically with demand.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300 group">
-              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                <BookOpen className="w-6 h-6 text-white" aria-hidden="true" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">Educational Focus</h3>
-              <p className="text-gray-300 text-sm sm:text-base">
-                Specifically designed for educational content with support for mathematics, science, and more.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300 group">
-              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                <Users className="w-6 h-6 text-white" aria-hidden="true" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">Collaborative</h3>
-              <p className="text-gray-300 text-sm sm:text-base">
-                Share projects with your team, manage user permissions, and collaborate in real-time.
-              </p>
-            </div>
-
-            {/* Feature 5 */}
-            <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300 group">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                <Star className="w-6 h-6 text-white" aria-hidden="true" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">Professional Quality</h3>
-              <p className="text-gray-300 text-sm sm:text-base">
-                Export in 4K resolution with customizable styles, perfect for presentations and online courses.
-              </p>
-            </div>
-
-            {/* Feature 6 */}
-            <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300 group">
-              <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                <Play className="w-6 h-6 text-white" aria-hidden="true" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">Easy to Use</h3>
-              <p className="text-gray-300 text-sm sm:text-base">
-                No coding required. Simply describe your topic and let our AI handle the complex animation logic.
-              </p>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: 10000, suffix: '+', label: 'Active Users', icon: <Users className="w-6 h-6" /> },
+              { value: 50000, suffix: '+', label: 'Animations Created', icon: <Video className="w-6 h-6" /> },
+              { value: 95, suffix: '%', label: 'Satisfaction Rate', icon: <Star className="w-6 h-6" /> },
+              { value: 150, suffix: '+', label: 'Countries', icon: <Globe className="w-6 h-6" /> },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+              >
+                <Card variant="glass-strong" size="lg" className="text-center">
+                  <CardContent>
+                    <div className="flex justify-center mb-4 text-blue-400">
+                      {stat.icon}
+                    </div>
+                    <div className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                      <StatCounter end={stat.value} suffix={stat.suffix} />
+                    </div>
+                    <p className="text-slate-400 font-medium">{stat.label}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center safe-area-inset-bottom">
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-8 sm:p-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
-              Ready to Create Amazing Videos?
-            </h2>
-            <p className="text-lg sm:text-xl text-purple-100 mb-6 sm:mb-8">
-              Join thousands of educators and content creators who trust ManimNext
-            </p>
-            <button
-              onClick={() => setShowForm(true)}
-              className="bg-white text-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-gray-100 transition-colors duration-300 shadow-lg touch-manipulation tap-highlight-transparent"
-              aria-label="Get started with ManimNext for free"
-            >
-              Get Started Free
-            </button>
-          </div>
+        <section className="container mx-auto px-6 py-32">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto"
+          >
+            <Card variant="gradient-cosmic" size="2xl" className="text-center relative overflow-hidden">
+              {/* Background effects */}
+              <div className="absolute inset-0">
+                <div className="dot-pattern opacity-20" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20" />
+              </div>
+              
+              <CardContent className="relative z-10">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                  Ready to Transform Your
+                  <span className="block bg-gradient-to-r from-yellow-300 to-white bg-clip-text text-transparent">
+                    Teaching Experience?
+                  </span>
+                </h2>
+                
+                <p className="text-xl md:text-2xl text-slate-200 mb-10 leading-relaxed">
+                  Join thousands of educators who are already creating engaging mathematical content with ManimNext
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                  <Button
+                    variant="premium"
+                    size="xl"
+                    className="text-lg px-10 py-4 shadow-2xl hover:shadow-glow-white hover:scale-105"
+                    leftIcon={<Sparkles className="w-5 h-5" />}
+                    onClick={() => setShowModal(true)}
+                  >
+                    Start Creating Today
+                  </Button>
+                  
+                  <div className="flex items-center gap-2 text-slate-300">
+                    <Check className="w-5 h-5 text-green-400" />
+                    <span>No credit card required</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </section>
-      </main>
+      </div>
 
-      <Footer />
+      {/* Modal */}
+      {showModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          onClick={() => setShowModal(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="w-full max-w-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Card variant="glass-strong" size="xl" className="relative">
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              
+              <CardHeader center>
+                <CardTitle size="xl" className="mb-4">
+                  <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    Get Started with ManimNext
+                  </span>
+                </CardTitle>
+                <CardDescription className="text-lg text-slate-300">
+                  Enter your email to start creating amazing mathematical animations
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                <div className="space-y-6">
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200"
+                    />
+                  </div>
+                  
+                  <Button
+                    variant="gradient-cosmic"
+                    size="lg"
+                    fullWidth
+                    rightIcon={<ArrowRight className="w-5 h-5" />}
+                    className="text-lg py-4"
+                  >
+                    Start Creating Animations
+                  </Button>
+                  
+                  <div className="flex items-center justify-center gap-6 text-sm text-slate-400">
+                    <div className="flex items-center gap-1">
+                      <Check className="w-4 h-4 text-green-400" />
+                      <span>Free trial</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Check className="w-4 h-4 text-green-400" />
+                      <span>No credit card</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Check className="w-4 h-4 text-green-400" />
+                      <span>Cancel anytime</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 } 

@@ -1,194 +1,377 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { Menu, X, Settings } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Menu, 
+  X, 
+  Sparkles, 
+  Github, 
+  Twitter,
+  Sun,
+  Moon,
+  Settings,
+  User,
+  LogOut,
+  ChevronDown,
+  ArrowRight,
+  PlayCircle,
+  BookOpen,
+  Users,
+  MessageCircle
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Logo = ({ className }: { className?: string }) => (
+  <motion.div
+    className={cn("flex items-center gap-3", className)}
+    whileHover={{ scale: 1.05 }}
+    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+  >
+    <motion.div
+      className="relative"
+      animate={{ 
+        rotate: [0, 360],
+        scale: [1, 1.1, 1]
+      }}
+      transition={{
+        rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+        scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+      }}
+    >
+      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
+        <Sparkles className="w-5 h-5 text-white" />
+      </div>
+      <motion.div
+        className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 opacity-30 blur-md"
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.6, 0.3]
+        }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      />
+    </motion.div>
+    <div className="flex flex-col">
+      <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+        ManimNext
+      </span>
+      <span className="text-xs text-muted-foreground font-medium">
+        AI Animation Studio
+      </span>
+    </div>
+  </motion.div>
+);
 
-  // Close menu when clicking outside or pressing escape
-  const closeMenu = () => setIsMenuOpen(false);
+const ThemeToggle = () => {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  React.useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeMenu();
-      }
-    };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Element;
-      if (isMenuOpen && !target.closest('[data-mobile-menu]')) {
-        closeMenu();
-      }
-    };
-
-    if (isMenuOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.addEventListener('click', handleClickOutside);
-      document.body.style.overflow = 'hidden'; // Prevent background scroll
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.removeEventListener('click', handleClickOutside);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isMenuOpen]);
+  if (!mounted) {
+    return (
+      <div className="w-10 h-10 rounded-lg bg-muted animate-pulse" />
+    );
+  }
 
   return (
-    <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 relative z-40">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <span className="text-white font-bold text-base sm:text-lg">M</span>
-            </div>
-            <span className="text-white font-bold text-lg sm:text-xl">ManimNext</span>
-          </Link>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="relative overflow-hidden group"
+    >
+      <motion.div
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: theme === "dark" ? 0 : 1, rotate: theme === "dark" ? -180 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="absolute inset-0 flex items-center justify-center"
+      >
+        <Sun className="h-4 w-4" />
+      </motion.div>
+      <motion.div
+        initial={{ scale: 1, rotate: 0 }}
+        animate={{ scale: theme === "dark" ? 1 : 0, rotate: theme === "dark" ? 0 : 180 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="absolute inset-0 flex items-center justify-center"
+      >
+        <Moon className="h-4 w-4" />
+      </motion.div>
+    </Button>
+  );
+};
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <Link 
-              href="/" 
-              className="text-white hover:text-purple-300 transition-colors text-sm lg:text-base font-medium"
-            >
-              Home
-            </Link>
-            <Link 
-              href="/about" 
-              className="text-white hover:text-purple-300 transition-colors text-sm lg:text-base font-medium"
-            >
-              About
-            </Link>
-            <Link 
-              href="/docs" 
-              className="text-white hover:text-purple-300 transition-colors text-sm lg:text-base font-medium"
-            >
-              Documentation
-            </Link>
-            <Link 
-              href="/settings" 
-              className="text-white hover:text-purple-300 transition-colors text-sm lg:text-base font-medium flex items-center gap-1"
-              aria-label="Settings"
-            >
-              <Settings className="w-4 h-4" />
-              Settings
-            </Link>
-          </nav>
+const DropdownMenu = ({ 
+  trigger, 
+  children, 
+  className 
+}: { 
+  trigger: React.ReactNode
+  children: React.ReactNode
+  className?: string 
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-          {/* Desktop CTA Button */}
-          <div className="hidden md:block">
-            <Link
-              href="/get-started"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 lg:px-6 py-2 rounded-full text-sm lg:text-base font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl touch-manipulation tap-highlight-transparent"
-            >
-              Get Started
-            </Link>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors touch-manipulation tap-highlight-transparent"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={isMenuOpen}
-            data-mobile-menu
-          >
-            {isMenuOpen ? (
-              <X className="w-5 h-5" aria-hidden="true" />
-            ) : (
-              <Menu className="w-5 h-5" aria-hidden="true" />
+  return (
+    <div className="relative">
+      <button
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        className="flex items-center gap-1 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+      >
+        {trigger}
+        <ChevronDown className={cn(
+          "w-4 h-4 transition-transform duration-200",
+          isOpen && "rotate-180"
+        )} />
+      </button>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className={cn(
+              "absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 p-2 bg-background/80 backdrop-blur-xl border border-border rounded-xl shadow-lg z-50",
+              className
             )}
-          </button>
-        </div>
-      </div>
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
-      {/* Mobile Menu Overlay */}
-      {isMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden"
-          aria-hidden="true"
+const MobileMenu = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
+  <AnimatePresence>
+    {isOpen && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 lg:hidden"
+      >
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+          onClick={onClose}
         />
-      )}
+        
+        {/* Menu */}
+        <motion.div
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "100%" }}
+          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+          className="fixed right-0 top-0 h-full w-80 bg-background/95 backdrop-blur-xl border-l border-border p-6 shadow-2xl"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <Logo />
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+          
+          <nav className="space-y-6">
+            <div className="space-y-4">
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                Product
+              </h3>
+              <div className="space-y-3">
+                <a href="#" className="flex items-center gap-3 text-base font-medium hover:text-primary transition-colors">
+                  <PlayCircle className="w-5 h-5" />
+                  Features
+                </a>
+                <a href="#" className="flex items-center gap-3 text-base font-medium hover:text-primary transition-colors">
+                  <BookOpen className="w-5 h-5" />
+                  Documentation
+                </a>
+                <a href="#" className="flex items-center gap-3 text-base font-medium hover:text-primary transition-colors">
+                  <Users className="w-5 h-5" />
+                  Examples
+                </a>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                Support
+              </h3>
+              <div className="space-y-3">
+                <a href="#" className="flex items-center gap-3 text-base font-medium hover:text-primary transition-colors">
+                  <MessageCircle className="w-5 h-5" />
+                  Community
+                </a>
+                <a href="#" className="flex items-center gap-3 text-base font-medium hover:text-primary transition-colors">
+                  <Github className="w-5 h-5" />
+                  GitHub
+                </a>
+                <a href="#" className="flex items-center gap-3 text-base font-medium hover:text-primary transition-colors">
+                  <Twitter className="w-5 h-5" />
+                  Twitter
+                </a>
+              </div>
+            </div>
+          </nav>
+          
+          <div className="mt-8 space-y-4">
+            <Button variant="outline" size="lg" fullWidth>
+              Sign In
+            </Button>
+            <Button variant="gradient" size="lg" fullWidth rightIcon={<ArrowRight className="w-4 h-4" />}>
+              Get Started Free
+            </Button>
+          </div>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
+export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      <motion.header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-40 transition-all duration-500",
+          isScrolled 
+            ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-lg" 
+            : "bg-transparent"
+        )}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+            {/* Logo */}
+            <Logo />
+
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-8">
+              <DropdownMenu
+                trigger="Product"
+                className="w-72"
+              >
+                <div className="space-y-1">
+                  <a href="#" className="flex items-start gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors group">
+                    <div className="w-8 h-8 rounded-md bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <PlayCircle className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-sm group-hover:text-primary transition-colors">Features</h4>
+                      <p className="text-xs text-muted-foreground">Explore our AI-powered tools</p>
+                    </div>
+                  </a>
+                  <a href="#" className="flex items-start gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors group">
+                    <div className="w-8 h-8 rounded-md bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <BookOpen className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-sm group-hover:text-primary transition-colors">Documentation</h4>
+                      <p className="text-xs text-muted-foreground">Learn how to get started</p>
+                    </div>
+                  </a>
+                  <a href="#" className="flex items-start gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors group">
+                    <div className="w-8 h-8 rounded-md bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Users className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-sm group-hover:text-primary transition-colors">Examples</h4>
+                      <p className="text-xs text-muted-foreground">See what others have created</p>
+                    </div>
+                  </a>
+                </div>
+              </DropdownMenu>
+
+              <a href="#" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+                Pricing
+              </a>
+              
+              <DropdownMenu
+                trigger="Resources"
+                className="w-64"
+              >
+                <div className="space-y-1">
+                  <a href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
+                    <MessageCircle className="w-4 h-4" />
+                    <span className="text-sm font-medium">Community</span>
+                  </a>
+                  <a href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
+                    <Github className="w-4 h-4" />
+                    <span className="text-sm font-medium">GitHub</span>
+                  </a>
+                  <a href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
+                    <Twitter className="w-4 h-4" />
+                    <span className="text-sm font-medium">Twitter</span>
+                  </a>
+                </div>
+              </DropdownMenu>
+            </nav>
+
+            {/* Desktop Actions */}
+            <div className="hidden lg:flex items-center space-x-4">
+              <ThemeToggle />
+              
+              <Button variant="ghost" size="sm">
+                Sign In
+              </Button>
+              
+              <Button 
+                variant="gradient" 
+                size="sm" 
+                className="shadow-lg hover:shadow-xl"
+                rightIcon={<ArrowRight className="w-4 h-4" />}
+              >
+                Get Started
+              </Button>
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <div className="lg:hidden flex items-center space-x-2">
+              <ThemeToggle />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMobileMenuOpen(true)}
+              >
+                <Menu className="w-5 h-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </motion.header>
 
       {/* Mobile Menu */}
-      <div
-        className={`fixed top-0 right-0 h-full w-64 sm:w-80 bg-slate-900 transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        data-mobile-menu
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile navigation menu"
-      >
-        <div className="flex flex-col h-full">
-          {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b border-white/20">
-            <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-base">M</span>
-              </div>
-              <span className="text-white font-bold text-lg">ManimNext</span>
-            </div>
-            <button
-              onClick={closeMenu}
-              className="text-white p-2 rounded-lg hover:bg-white/10 transition-colors touch-manipulation tap-highlight-transparent"
-              aria-label="Close menu"
-            >
-              <X className="w-5 h-5" aria-hidden="true" />
-            </button>
-          </div>
-
-          {/* Mobile Menu Navigation */}
-          <nav className="flex-1 px-4 py-6">
-            <div className="space-y-4">
-              <Link
-                href="/"
-                onClick={closeMenu}
-                className="block text-white hover:text-purple-300 transition-colors text-base font-medium py-2 px-3 rounded-lg hover:bg-white/10"
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                onClick={closeMenu}
-                className="block text-white hover:text-purple-300 transition-colors text-base font-medium py-2 px-3 rounded-lg hover:bg-white/10"
-              >
-                About
-              </Link>
-              <Link
-                href="/docs"
-                onClick={closeMenu}
-                className="block text-white hover:text-purple-300 transition-colors text-base font-medium py-2 px-3 rounded-lg hover:bg-white/10"
-              >
-                Documentation
-              </Link>
-              <Link
-                href="/settings"
-                onClick={closeMenu}
-                className="block text-white hover:text-purple-300 transition-colors text-base font-medium py-2 px-3 rounded-lg hover:bg-white/10 flex items-center gap-2"
-              >
-                <Settings className="w-4 h-4" />
-                Settings
-              </Link>
-            </div>
-          </nav>
-
-          {/* Mobile Menu Footer */}
-          <div className="p-4 border-t border-white/20">
-            <Link
-              href="/get-started"
-              onClick={closeMenu}
-              className="block w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full text-base font-semibold transition-all duration-300 text-center touch-manipulation tap-highlight-transparent"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </div>
-    </header>
+      <MobileMenu 
+        isOpen={isMobileMenuOpen} 
+        onClose={() => setIsMobileMenuOpen(false)} 
+      />
+    </>
   );
 } 
