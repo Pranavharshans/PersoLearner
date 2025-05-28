@@ -85,47 +85,53 @@ export interface CardProps
   pattern?: boolean
 }
 
-const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, size, hover, interactive, animate, shimmer, pattern, children, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(cardVariants({ variant, size, hover, interactive, animate, className }))}
-      {...props}
-    >
-      {/* Background pattern */}
-      {pattern && (
-        <div className="absolute inset-0 opacity-30">
-          <div className="h-full w-full dot-pattern" />
-        </div>
-      )}
-      
-      {/* Shimmer effect */}
-      {shimmer && (
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
-      )}
-      
-      {/* Content */}
-      <div className="relative z-10">
-        {children}
-      </div>
-    </div>
-  )
-)
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    variant?: "default" | "outlined" | "elevated" | "glass" | "minimal" | "professional"
+    interactive?: boolean
+  }
+>(({ className, variant = "default", interactive = false, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-xl text-card-foreground",
+      {
+        // Default card with subtle background
+        "bg-card border border-border shadow-sm": variant === "default",
+        
+        // Outlined card with border emphasis
+        "bg-card border-2 border-border/50 shadow-sm hover:border-border": variant === "outlined",
+        
+        // Elevated card with depth
+        "bg-card border border-border/50 shadow-soft": variant === "elevated",
+        
+        // Glass morphism effect
+        "glass border-border/30": variant === "glass",
+        
+        // Minimal card with subtle background
+        "bg-muted/30 border border-border/30": variant === "minimal",
+        
+        // Professional card with elegant styling
+        "bg-card border border-border/40 shadow-soft": variant === "professional",
+      },
+      {
+        "interactive cursor-pointer": interactive,
+      },
+      className
+    )}
+    {...props}
+  />
+))
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
-    center?: boolean
-  }
->(({ className, center, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "flex flex-col space-y-2 pb-4",
-      center && "text-center items-center",
-      className
-    )}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
     {...props}
   />
 ))
@@ -134,45 +140,24 @@ CardHeader.displayName = "CardHeader"
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement> & {
-    gradient?: boolean
-    size?: "sm" | "default" | "lg" | "xl"
+    as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
   }
->(({ className, gradient, size = "default", ...props }, ref) => {
-  const sizeClasses = {
-    sm: "text-lg",
-    default: "text-xl",
-    lg: "text-2xl",
-    xl: "text-3xl",
-  }
-  
-  return (
-    <h3
-      ref={ref}
-      className={cn(
-        "font-semibold leading-tight tracking-tight",
-        sizeClasses[size],
-        gradient && "bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent",
-        className
-      )}
-      {...props}
-    />
-  )
-})
+>(({ className, as: Component = "h3", ...props }, ref) => (
+  <Component
+    ref={ref}
+    className={cn("font-semibold leading-none tracking-tight", className)}
+    {...props}
+  />
+))
 CardTitle.displayName = "CardTitle"
 
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement> & {
-    muted?: boolean
-  }
->(({ className, muted = true, ...props }, ref) => (
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn(
-      "text-sm leading-relaxed",
-      muted && "text-muted-foreground",
-      className
-    )}
+    className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 ))
@@ -180,36 +165,19 @@ CardDescription.displayName = "CardDescription"
 
 const CardContent = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
-    noPadding?: boolean
-  }
->(({ className, noPadding, ...props }, ref) => (
-  <div 
-    ref={ref} 
-    className={cn(
-      !noPadding && "pt-4",
-      className
-    )} 
-    {...props} 
-  />
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
-    center?: boolean
-    border?: boolean
-  }
->(({ className, center, border, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "flex items-center pt-4",
-      center && "justify-center",
-      border && "border-t border-border mt-4 pt-4",
-      className
-    )}
+    className={cn("flex items-center p-6 pt-0", className)}
     {...props}
   />
 ))
