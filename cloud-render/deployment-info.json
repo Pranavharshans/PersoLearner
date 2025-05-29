@@ -1,0 +1,9 @@
+{
+  "service_name": "manim-renderer",
+  "service_url": "https://manim-renderer-cvebuvehua-uc.a.run.app",
+  "region": "us-central1",
+  "project_id": "tinypromise-cd639",
+  "image": "us-central1-docker.pkg.dev/tinypromise-cd639/manim-renderer/manim-renderer:20250529-145027",
+  "deployed_at": "2025-05-29T09:22:30Z",
+  "build_timestamp": "20250529-145027"
+}

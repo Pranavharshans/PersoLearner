@@ -184,7 +184,7 @@ CPU=2
 TIMEOUT=3600
 CONCURRENCY=1
 MIN_INSTANCES=0
-MAX_INSTANCES=10
+MAX_INSTANCES=3
 EOF
 
 echo -e "${GREEN}✅ Environment configuration saved to .env.gcp${NC}"

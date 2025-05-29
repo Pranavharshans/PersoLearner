@@ -113,7 +113,7 @@ gcloud run deploy "${SERVICE_NAME}" \
     --timeout="${TIMEOUT:-3600}" \
     --concurrency="${CONCURRENCY:-1}" \
     --min-instances="${MIN_INSTANCES:-0}" \
-    --max-instances="${MAX_INSTANCES:-10}" \
+    --max-instances="${MAX_INSTANCES:-3}" \
     --set-env-vars="${ENV_VARS_STRING}" \
     --allow-unauthenticated \
     --port=8080 \

@@ -136,16 +136,29 @@ class ManimRenderer:
         scene_name: str = None
     ) -> Dict[str, Any]:
         """
-        Render a Manim script and upload to Google Cloud Storage
+        Render a Manim script and return the result
         """
         start_time = time.time()
         quality = quality or config.DEFAULT_QUALITY
         format = format or config.DEFAULT_FORMAT
         
+        # Map quality names to Manim CLI quality flags
+        quality_mapping = {
+            'low_quality': 'l',
+            'medium_quality': 'm', 
+            'high_quality': 'h',
+            'production_quality': 'p',
+            '4k_quality': 'k'
+        }
+        
+        # Get the correct quality flag
+        quality_flag = quality_mapping.get(quality, 'm')  # default to medium
+        
         logger.info(
             "Starting render",
             request_id=request_id,
             quality=quality,
+            quality_flag=quality_flag,
             format=format,
             scene_name=scene_name
         )
@@ -171,7 +184,7 @@ class ManimRenderer:
                 str(script_file),
                 '--output_file', f'video_{request_id}',
                 '--media_dir', str(render_output_dir),
-                f'--{quality}',
+                '--quality', quality_flag,
                 '--format', format,
                 '--disable_caching'
             ]
