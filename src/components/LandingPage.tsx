@@ -153,7 +153,7 @@ export default function LandingPage() {
             >
               <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white shadow-sm border border-slate-200/60 text-sm font-medium text-slate-600">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                <span>Trusted by 10,000+ educators worldwide</span>
+                <span>Trusted by 50,000+ learners worldwide</span>
               </div>
             </motion.div>
 
@@ -165,15 +165,15 @@ export default function LandingPage() {
               className="text-center mb-16"
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight mb-8 leading-[0.9]">
-                <span className="block font-extralight text-slate-400">Transform</span>
-                <span className="block font-semibold text-slate-900">Mathematical Concepts</span>
-                <span className="block font-light text-slate-600">into Visual Stories</span>
+                <span className="block font-extralight text-slate-400">Learn Any Topic</span>
+                <span className="block font-semibold text-slate-900">Through Personalized</span>
+                <span className="block font-light text-slate-600">Animated Videos</span>
               </h1>
 
               <div className="max-w-3xl mx-auto mb-12">
                 <p className="text-xl md:text-2xl text-slate-600 leading-relaxed font-light">
-                  Create elegant mathematical animations with AI-powered simplicity. 
-                  <span className="text-slate-900 font-medium"> No coding expertise required.</span>
+                  Simply enter any topic you want to learn and get a 
+                  <span className="text-slate-900 font-medium"> personalized animated video</span> created just for you.
                 </p>
               </div>
 
@@ -186,7 +186,7 @@ export default function LandingPage() {
                   leftIcon={<Play className="w-5 h-5" />}
                   onClick={() => setShowModal(true)}
                 >
-                  Start Creating
+                  Start Learning Now
                 </Button>
                 
                 <Button
@@ -195,7 +195,7 @@ export default function LandingPage() {
                   className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-2xl"
                   leftIcon={<Video className="w-5 h-5" />}
                 >
-                  Watch Demo
+                  Watch Sample Video
                 </Button>
               </div>
             </motion.div>
@@ -213,10 +213,10 @@ export default function LandingPage() {
           >
             <h2 className="text-4xl md:text-5xl font-light mb-8 text-slate-900">
               Designed for 
-              <span className="font-semibold"> Modern Education</span>
+              <span className="font-semibold"> Modern Learners</span>
             </h2>
             <p className="text-xl text-slate-600 leading-relaxed font-light max-w-2xl mx-auto">
-              Powerful tools that adapt to your teaching style, not the other way around
+              Every video is tailored to your learning style and current knowledge level
             </p>
           </motion.div>
 
@@ -226,27 +226,27 @@ export default function LandingPage() {
               {[
                 {
                   icon: <Brain className="w-8 h-8 text-slate-700" />,
-                  title: "Intelligent Content Generation",
-                  description: "Describe your mathematical concept in plain language. Our AI understands context, complexity levels, and educational objectives to create precisely what you envision.",
-                  highlight: "AI-Powered"
+                  title: "Personalized Learning Videos",
+                  description: "Enter any topic - from basic math to quantum physics. Our AI creates animated videos specifically tailored to your learning level and interests.",
+                  highlight: "AI-Personalized"
                 },
                 {
                   icon: <Target className="w-8 h-8 text-slate-700" />,
-                  title: "Precision Without Complexity",
-                  description: "Professional-grade mathematical visualization tools that require no technical expertise. Focus on teaching, not troubleshooting software.",
-                  highlight: "User-Friendly"
+                  title: "Instant Visual Understanding",
+                  description: "Complex concepts become crystal clear through beautiful animations. No more struggling with textbooks or boring lectures.",
+                  highlight: "Visual Learning"
                 },
                 {
                   icon: <Lightbulb className="w-8 h-8 text-slate-700" />,
-                  title: "Adaptive Learning Support",
-                  description: "Create content that scales from elementary concepts to advanced mathematics. Built-in progression tracking helps maintain student engagement.",
-                  highlight: "Adaptive"
+                  title: "Adaptive to Your Pace",
+                  description: "Learn at your own speed with videos that adjust to your current understanding. Build knowledge progressively with confidence.",
+                  highlight: "Self-Paced"
                 },
                 {
                   icon: <BookOpen className="w-8 h-8 text-slate-700" />,
-                  title: "Curriculum Integration",
-                  description: "Seamlessly integrate with existing lesson plans and educational frameworks. Export to any format your institution requires.",
-                  highlight: "Compatible"
+                  title: "Any Subject, Any Level",
+                  description: "From elementary concepts to advanced topics across mathematics, science, history, and more. Your curiosity is the only limit.",
+                  highlight: "Universal"
                 }
               ].map((feature, index) => (
                 <motion.div
@@ -302,9 +302,9 @@ export default function LandingPage() {
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
               {[
-                { value: 15000, suffix: '+', label: 'Educators', icon: <Users className="w-6 h-6 text-slate-600" /> },
-                { value: 125000, suffix: '+', label: 'Animations', icon: <Video className="w-6 h-6 text-slate-600" /> },
-                { value: 98, suffix: '%', label: 'Satisfaction', icon: <Award className="w-6 h-6 text-slate-600" /> },
+                { value: 150000, suffix: '+', label: 'Happy Learners', icon: <Users className="w-6 h-6 text-slate-600" /> },
+                { value: 500000, suffix: '+', label: 'Videos Created', icon: <Video className="w-6 h-6 text-slate-600" /> },
+                { value: 95, suffix: '%', label: 'Learning Success', icon: <Award className="w-6 h-6 text-slate-600" /> },
                 { value: 185, suffix: '+', label: 'Countries', icon: <Globe className="w-6 h-6 text-slate-600" /> },
               ].map((stat, index) => (
                 <motion.div
@@ -341,11 +341,11 @@ export default function LandingPage() {
               className="text-center mb-20"
             >
               <h2 className="text-4xl md:text-5xl font-light mb-8 text-slate-900">
-                From Concept to 
-                <span className="font-semibold"> Creation</span>
+                From Question to 
+                <span className="font-semibold"> Understanding</span>
               </h2>
               <p className="text-xl text-slate-600 max-w-2xl mx-auto font-light">
-                Three simple steps to transform your mathematical ideas into engaging visual content
+                Three simple steps to get your personalized animated learning video
               </p>
             </motion.div>
 
@@ -353,20 +353,20 @@ export default function LandingPage() {
               {[
                 {
                   step: "01",
-                  title: "Describe Your Vision",
-                  description: "Simply explain the mathematical concept you want to visualize. Our AI understands natural language and educational context.",
+                  title: "Enter Your Topic",
+                  description: "Type any subject you want to learn - from algebra to astrophysics. Our AI understands your learning needs and current level.",
                   icon: <Lightbulb className="w-12 h-12 text-slate-700" />
                 },
                 {
                   step: "02", 
-                  title: "AI Crafts Your Animation",
-                  description: "Advanced algorithms generate professional mathematical animations tailored to your specific requirements and audience level.",
+                  title: "AI Creates Your Video",
+                  description: "Our intelligent system generates a personalized animated video tailored specifically to your learning style and comprehension level.",
                   icon: <Zap className="w-12 h-12 text-slate-700" />
                 },
                 {
                   step: "03",
-                  title: "Share and Engage",
-                  description: "Export in multiple formats, integrate with your teaching platform, and watch student comprehension improve dramatically.",
+                  title: "Learn and Master",
+                  description: "Watch your custom video, pause and replay as needed, and truly understand complex concepts through beautiful visualizations.",
                   icon: <TrendingUp className="w-12 h-12 text-slate-700" />
                 }
               ].map((step, index) => (
@@ -423,13 +423,13 @@ export default function LandingPage() {
               <div className="relative z-10">
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8 text-slate-900 leading-tight">
                   Ready to 
-                  <span className="font-semibold"> Elevate</span>
+                  <span className="font-semibold"> Transform</span>
                   <br />
-                  Your Teaching?
+                  Your Learning?
                 </h2>
                 
                 <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-                  Join the community of forward-thinking educators who are transforming how mathematics is taught and understood.
+                  Join millions of learners who are discovering new concepts through personalized animated videos tailored just for them.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
@@ -440,22 +440,22 @@ export default function LandingPage() {
                     leftIcon={<Play className="w-5 h-5" />}
                     onClick={() => setShowModal(true)}
                   >
-                    Begin Your Journey
+                    Start Learning Today
                   </Button>
                 </div>
                 
                 <div className="flex items-center justify-center gap-8 text-sm text-slate-500">
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-500" />
-                    <span>14-day free trial</span>
+                    <span>Free to start</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-500" />
-                    <span>No setup required</span>
+                    <span>Instant video generation</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-500" />
-                    <span>Cancel anytime</span>
+                    <span>Any topic, any level</span>
                   </div>
                 </div>
               </div>
@@ -492,10 +492,10 @@ export default function LandingPage() {
               <div className="text-center mb-8">
                 <h3 className="text-3xl font-light text-slate-900 mb-4">
                   Start Your 
-                  <span className="font-semibold"> Free Trial</span>
+                  <span className="font-semibold"> Learning Journey</span>
                 </h3>
                 <p className="text-slate-600 font-light">
-                  Create your first mathematical animation in minutes
+                  Enter your email to get your first personalized learning video
                 </p>
               </div>
               
@@ -517,17 +517,17 @@ export default function LandingPage() {
                   rightIcon={<ArrowRight className="w-5 h-5" />}
                   className="bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-2xl"
                 >
-                  Start Creating Now
+                  Get My First Video
                 </Button>
                 
                 <div className="flex items-center justify-center gap-6 text-sm text-slate-500">
                   <div className="flex items-center gap-1">
                     <Check className="w-4 h-4 text-emerald-500" />
-                    <span>Free trial</span>
+                    <span>Free forever</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4 text-slate-400" />
-                    <span>2 min setup</span>
+                    <span>Ready in seconds</span>
                   </div>
                 </div>
               </div>

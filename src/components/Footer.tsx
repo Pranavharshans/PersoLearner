@@ -225,23 +225,23 @@ export default function Footer() {
               <Logo />
               
               <p className="text-muted-foreground leading-relaxed max-w-md">
-                Transform complex mathematical concepts into beautiful, engaging animations with the power of AI. 
-                Trusted by educators worldwide.
+                Learn any topic through personalized animated videos created just for you. 
+                Enter your question and watch AI transform complex concepts into visual understanding.
               </p>
 
               {/* Key Features */}
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
                   <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
-                  <span className="text-muted-foreground">AI-Powered Animation Generation</span>
+                  <span className="text-muted-foreground">Personalized Learning Videos</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-500 to-blue-500" />
-                  <span className="text-muted-foreground">No Coding Required</span>
+                  <span className="text-muted-foreground">Any Topic, Any Level</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-                  <span className="text-muted-foreground">Professional Quality Output</span>
+                  <span className="text-muted-foreground">Instant AI-Generated Content</span>
                 </div>
               </div>
 
@@ -299,7 +299,7 @@ export default function Footer() {
                 >
                   <Heart className="w-4 h-4 text-red-500 fill-current" />
                 </motion.div>
-                <span>for educators.</span>
+                <span>for learners.</span>
               </div>
 
               <div className="flex items-center gap-6 text-sm text-muted-foreground">

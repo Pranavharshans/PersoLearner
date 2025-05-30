@@ -16,9 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ManimNext - AI-Powered Animation Studio",
-  description: "Transform ideas into stunning educational animations with AI and Manim. Professional video creation for educators, creators, and enterprises.",
-  keywords: ["manim", "animation", "AI", "education", "video", "mathematics", "science", "visualization"],
+  title: "ManimNext - Personalized Learning Videos",
+  description: "Learn any topic through personalized animated videos. Enter any subject and get custom educational content created just for you by AI.",
+  keywords: ["personalized learning", "animated videos", "AI education", "visual learning", "any topic", "custom videos", "learning platform"],
   authors: [{ name: "ManimNext Team" }],
   creator: "ManimNext",
   publisher: "ManimNext",
@@ -37,22 +37,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://manimnext.com",
-    title: "ManimNext - AI-Powered Animation Studio",
-    description: "Transform ideas into stunning educational animations with AI and Manim. Professional video creation for educators, creators, and enterprises.",
+    title: "ManimNext - Personalized Learning Videos",
+    description: "Learn any topic through personalized animated videos. Enter any subject and get custom educational content created just for you by AI.",
     siteName: "ManimNext",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ManimNext - AI-Powered Animation Studio",
+        alt: "ManimNext - Personalized Learning Videos",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ManimNext - AI-Powered Animation Studio",
-    description: "Transform ideas into stunning educational animations with AI and Manim.",
+    title: "ManimNext - Personalized Learning Videos",
+    description: "Learn any topic through personalized animated videos. Enter any subject and get custom educational content.",
     images: ["/og-image.png"],
     creator: "@manimnext",
   },
