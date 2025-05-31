@@ -165,13 +165,13 @@ export default function LandingPage() {
               className="text-center mb-16"
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight mb-8 leading-[0.9]">
-                <span className="block font-extralight text-slate-400">Learn Any Topic</span>
+                <span className="block font-extralight text-slate-600">Learn Any Topic</span>
                 <span className="block font-semibold text-slate-900">Through Personalized</span>
-                <span className="block font-light text-slate-600">Animated Videos</span>
+                <span className="block font-light text-slate-800">Animated Videos</span>
               </h1>
 
               <div className="max-w-3xl mx-auto mb-12">
-                <p className="text-xl md:text-2xl text-slate-600 leading-relaxed font-light">
+                <p className="text-xl md:text-2xl text-slate-700 leading-relaxed font-light">
                   Simply enter any topic you want to learn and get a 
                   <span className="text-slate-900 font-medium"> personalized animated video</span> created just for you.
                 </p>
@@ -215,7 +215,7 @@ export default function LandingPage() {
               Designed for 
               <span className="font-semibold"> Modern Learners</span>
             </h2>
-            <p className="text-xl text-slate-600 leading-relaxed font-light max-w-2xl mx-auto">
+            <p className="text-xl text-slate-700 leading-relaxed font-light max-w-2xl mx-auto">
               Every video is tailored to your learning style and current knowledge level
             </p>
           </motion.div>
@@ -274,7 +274,7 @@ export default function LandingPage() {
                         </h3>
                       </div>
                       
-                      <p className="text-slate-600 leading-relaxed text-lg font-light">
+                      <p className="text-slate-700 leading-relaxed text-lg font-light">
                         {feature.description}
                       </p>
                     </div>
@@ -322,7 +322,7 @@ export default function LandingPage() {
                     <div className="text-3xl md:text-4xl font-light text-slate-900 mb-2">
                       <StatCounter end={stat.value} suffix={stat.suffix} />
                     </div>
-                    <p className="text-slate-600 font-medium text-sm uppercase tracking-wider">{stat.label}</p>
+                    <p className="text-slate-700 font-medium text-sm uppercase tracking-wider">{stat.label}</p>
                   </div>
                 </motion.div>
               ))}
@@ -344,7 +344,7 @@ export default function LandingPage() {
                 From Question to 
                 <span className="font-semibold"> Understanding</span>
               </h2>
-              <p className="text-xl text-slate-600 max-w-2xl mx-auto font-light">
+              <p className="text-xl text-slate-700 max-w-2xl mx-auto font-light">
                 Three simple steps to get your personalized animated learning video
               </p>
             </motion.div>
@@ -392,7 +392,7 @@ export default function LandingPage() {
                       {step.title}
                     </h3>
                     
-                    <p className="text-lg text-slate-600 leading-relaxed font-light max-w-lg">
+                    <p className="text-lg text-slate-700 leading-relaxed font-light max-w-lg">
                       {step.description}
                     </p>
                   </div>
@@ -428,7 +428,7 @@ export default function LandingPage() {
                   Your Learning?
                 </h2>
                 
-                <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+                <p className="text-xl text-slate-700 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
                   Join millions of learners who are discovering new concepts through personalized animated videos tailored just for them.
                 </p>
                 
@@ -494,7 +494,7 @@ export default function LandingPage() {
                   Start Your 
                   <span className="font-semibold"> Learning Journey</span>
                 </h3>
-                <p className="text-slate-600 font-light">
+                <p className="text-slate-700 font-light">
                   Enter your email to get your first personalized learning video
                 </p>
               </div>
